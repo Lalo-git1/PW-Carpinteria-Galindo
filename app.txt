@@ -1,0 +1,37 @@
+
+# app.py
+import os
+from flask import Flask, send_from_directory
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(__name__)
+
+# Ruta principal: sirve PaginaPrincipal.html (asegúrate que el nombre y extensión coinciden)
+@app.route("/")
+def index():
+    return send_from_directory(BASE_DIR, "PaginaPrincipal.html")  # Cambia a "index.html" si lo renombraste
+
+# Otras páginas (ajusta nombres EXACTOS, incl. mayúsculas y extensión .html)
+@app.route("/colores")
+def colores():
+    return send_from_directory(BASE_DIR, "Colores.html")
+
+@app.route("/cotizacion")
+def cotizacion():
+    return send_from_directory(BASE_DIR, "Cotizacion.html")
+
+@app.route("/disenos")
+def disenos():
+    return send_from_directory(BASE_DIR, "Disenos.html")
+
+@app.route("/pedidos")
+def pedidos():
+    return send_from_directory(BASE_DIR, "Pedidos.html")
+
+@app.route("/registro")
+def registro():
+    return send_from_directory(BASE_DIR, "Registro.html")
+
+# Si tienes archivos estáticos (CSS/JS/img) en /static, Flask los sirve automáticamente:
+# <link href="/static/estilos.css">, <script src="/static/app.js">
