@@ -1,0 +1,237 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Colores y Acabados | Carpintería Galindo</title>
+
+  <!-- Estilos base (beige/gris + minimalista) -->
+  <style>
+    :root {
+      --bg: #f5f1e9;       /* beige claro */
+      --fg: #2f2f2f;       /* gris oscuro */
+      --muted: #7a7a7a;    /* gris medio */
+      --accent: #b88c5a;   /* beige/madera */
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; color: var(--fg); background: var(--bg); }
+    header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #c0b38f;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 18px;
+            animation: slideDown 0.6s ease;
+            slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }}
+        }
+    .menu {
+    display: flex;
+    gap: 15px;
+    }
+    .navbar {
+            background-color: #c0b38f;
+            padding: 10px;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #d4c5a8;
+        }
+    .nav { max-width: 1200px; margin: 0 auto; display:flex; align-items:center; justify-content:space-between; padding: 12px 20px; }
+    .nav a { text-decoration:none; color: var(--fg); margin: 0 8px; padding: 8px 10px; border-radius:8px; }
+    .nav a:hover { background: #f0f0f0; }
+    .brand { font-weight: 700; letter-spacing: 0.3px; }
+    main { max-width: 1200px; margin: 24px auto; padding: 0 20px; }
+    .section { background: var(--card); border:1px solid #e9e9e9; border-radius:16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+    .section h2 { margin-top:0; }
+    .helper { color: var(--muted); font-size: 12px; }
+
+    /* Grid de tarjetas */
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; }
+    .card { background: var(--card); border:1px solid #eee; border-radius:12px; overflow:hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); display:flex; flex-direction:column; }
+    .swatch { height: 120px; border-bottom:1px solid #ddd; }
+    .body { padding: 12px; display:flex; flex-direction:column; gap:6px; }
+    .title { font-weight: 600; }
+    .code { color: var(--accent); font-weight: 600; }
+    .row { display:flex; gap:8px; flex-wrap:wrap; }
+    .button { background: var(--accent); color:white; border:none; padding:8px 12px; border-radius:10px; font-weight:600; cursor:pointer; }
+    .button:hover { filter: brightness(0.95); }
+    .ghost { background: var(--bg); color: var(--fg); border:1px solid #e0d7c7; }
+    .ghost:hover { background:#efe9dc; }
+
+    /* Buscador */
+    .toolbar { display:flex; gap:10px; align-items:center; margin-bottom:12px; }
+    .input { width: 320px; max-width:100%; padding:10px 12px; border:1px solid #dcdcdc; border-radius:10px; background:#fff; font-size:14px; }
+    .input:focus { outline:2px solid #e6d8c2; border-color: #cbb18c; }
+
+    /* Responsivo */
+    @media (max-width: 640px) {
+      .nav { padding: 10px 12px; }
+      .nav a { margin: 0 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="userDisplay" style="position: absolute; top: 10px; right: 20px; font-weight: bold;"></div>
+    <header>
+        <div><strong>Carpintería Galindo</strong></div>
+        <nav class="navbar">
+            <a href="PaginaPrincipal.html">Inicio</a>
+            <a href="Disenos.html">Diseños</a>
+            <a href="Pedidos.html">Pedidos</a>
+            <a href="Cotizacion.html">Cotización</a>
+        </nav>
+    </header>
+
+  <main>
+    <section class="section">
+      <h2>Paleta de colores y acabados</h2>
+      <p class="helper">
+        Selecciona el acabado deseado. Los colores pueden variar según la madera y el barniz.
+        Usa el buscador para filtrar por nombre o por código (ej. <strong>CLR-GRIS</strong>).
+      </p>
+
+      <!-- Barra de herramientas -->
+      <div class="toolbar">
+        <input id="q" class="input" type="search" placeholder="Buscar por nombre o código..." aria-label="Buscar color" oninput="filtrar()">
+        <button class="button ghost" onclick="limpiar()">Limpiar</button>
+      </div>
+
+      <!-- Paleta -->
+      <div id="paleta" class="grid" aria-live="polite">
+        <!-- Se llenará dinámicamente con JS para facilitar mantenimiento -->
+      </div>
+    </section>
+  </main>
+
+  <div class="helper" style="text-align:center; padding: 8px 0 24px;">
+    © 2025 Carpintería Galindo
+  </div>
+
+  <!-- Lógica de la página -->
+  <script>
+    const COLORES = [
+      { nombre: "Roble Natural", codigo: "CLR-ROBLE", hex: "#d2b48c" },
+      { nombre: "Nogal Oscuro",  codigo: "CLR-NOGAL", hex: "#8b5a2b" },
+      { nombre: "Gris Mate",     codigo: "CLR-GRIS",  hex: "#c0c0c0" },
+      { nombre: "Beige Suave",   codigo: "CLR-BEIGE", hex: "#f5f1e9" }
+    ];
+
+    // Render inicial
+    document.addEventListener("DOMContentLoaded", () => {
+      render(COLORES);
+      // Si viene ?color=CLR-... en la URL, resalta ese color
+      const pre = new URLSearchParams(location.search).get("color");
+      if (pre) resaltar(pre);
+    });
+
+    function render(list) {
+      const paleta = document.getElementById("paleta");
+      paleta.innerHTML = "";
+      if (!list.length) {
+        paleta.innerHTML = '<p class="helper">Sin resultados. Prueba con otro término.</p>';
+        return;
+      }
+
+      list.forEach(c => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("aria-label", c.nombre + " " + c.codigo);
+
+        const sw = document.createElement("div");
+        sw.className = "swatch";
+        sw.style.background = c.hex;
+
+        const body = document.createElement("div");
+        body.className = "body";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = c.nombre;
+
+        const code = document.createElement("div");
+        code.className = "code";
+        code.textContent = c.codigo;
+
+        const acciones = document.createElement("div");
+        acciones.className = "row";
+
+        const btnCopiar = document.createElement("button");
+        btnCopiar.className = "button ghost";
+        btnCopiar.textContent = "Copiar código";
+        btnCopiar.onclick = () => copiar(c.codigo);
+
+        const btnPedido = document.createElement("a");
+        btnPedido.className = "button";
+        btnPedido.textContent = "Usar en Pedido";
+        btnPedido.href = "file:///C:/Users/galin/Downloads/Pedidos.html" + encodeURIComponent(c.codigo);
+        btnPedido.setAttribute("role", "button");
+
+        const btnCot = document.createElement("a");
+        btnCot.className = "button";
+        btnCot.textContent = "Usar en Cotización";
+        btnCot.href = "Cotizacion.html?color=" + encodeURIComponent(c.codigo);
+        btnCot.setAttribute("role", "button");
+
+        acciones.append(btnCopiar, btnPedido, btnCot);
+        body.append(title, code, acciones);
+        card.append(sw, body);
+        paleta.append(card);
+      });
+    }
+
+    function copiar(texto) {
+      navigator.clipboard.writeText(texto).then(
+        () => alert("Código copiado: " + texto),
+        () => alert("No se pudo copiar. Intenta manualmente.")
+      );
+    }
+
+    function filtrar() {
+      const q = (document.getElementById("q").value || "").trim().toLowerCase();
+      const res = COLORES.filter(c =>
+        c.nombre.toLowerCase().includes(q) ||
+        c.codigo.toLowerCase().includes(q)
+      );
+      render(res);
+    }
+
+    function limpiar() {
+      document.getElementById("q").value = "";
+      render(COLORES);
+    }
+
+    function resaltar(codigo) {
+      // Opcional: podrías hacer scroll y marcar visualmente el color preseleccionado.
+      const q = codigo.toLowerCase();
+      const res = COLORES.filter(c => c.codigo.toLowerCase() === q);
+      if (res.length) {
+        render(COLORES); // re-render para asegurar layout
+        // Simplemente mostramos un aviso (podrías añadir una clase .selected si quieres)
+        alert("Color preseleccionado: " + res[0].nombre + " (" + res[0].codigo + ")");
+      }
+    }
+  </script>
+  
+</body>
+</html>

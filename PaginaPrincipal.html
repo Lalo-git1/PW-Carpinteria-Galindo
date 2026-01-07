@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carpintería Galindo</title>
+<style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f2e9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #c0b38f;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 18px;
+            animation: slideDown 0.6s ease;
+            slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }}
+        }
+
+        .menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .menu a, .menu button {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .menu a:hover, .menu button:hover {
+            color: #333;
+        }
+
+        .usuario {
+            font-weight: bold;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .navbar {
+            background-color: #c0b38f;
+            padding: 10px;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #d4c5a8;
+        }
+
+        main {
+            padding: 80px 20px 20px;
+        }
+
+        .section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: fadeSlide 1s ease-in;
+        }
+
+        .section-reverse {
+            flex-direction: row-reverse;
+        }
+
+        .image-container {
+            width: 30%;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #c0b38f;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .text-container {
+            width: 70%;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .carousel-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-images img {
+            width: 20%;
+            height: auto;
+            object-fit: cover;
+            padding: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            scroll-snap-align: center;
+        }
+
+        .carousel-images img:hover {
+            transform: scale(1.1);
+        }
+
+        .trust-section {
+            background-color: #e0d7c3;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .trust-section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .trust-section li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            background-color: #d4c5a8;
+            padding: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-icons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-content:hover {
+            transform: scale(1.02);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 768px) {
+            .section {
+                flex-direction: column;
+            }
+            .image-container, .text-container {
+                width: 100%;
+            }
+            .carousel-images img {
+                width: 50%;
+            }
+        }
+        #videoOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 5000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .videoBox {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background: #000;
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .videoBox video,
+        .videoBox iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
+        }
+
+        .closeVideo {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            color: #000;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+
+        /* Ajustes extra para móvil */
+        @media (max-width: 600px) {
+            .videoBox {
+                width: 95%;
+            }
+
+            .closeVideo {
+                top: -10px;
+                right: -10px;
+                width: 36px;
+                height: 36px;
+                line-height: 36px;
+                font-size: 24px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="videoOverlay" style="display:none;">
+    <div class="videoBox">
+        <span class="closeVideo" onclick="cerrarVideo()">×</span>
+
+        <iframe
+            src="https://www.youtube.com/embed/gGcAIE3s428?rel=0&autoplay=1"
+            title="Video introductorio"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    
+    </div>
+</div>
+
+    <div id="userDisplay" style="position: absolute; top: 10px; right: 20px; font-weight: bold;"></div>
+    <header>
+        <div><strong>Carpintería Galindo</strong></div>
+        <nav class="navbar">
+            <a href="Colores.html">Colores</a>
+            <a href="Disenos.html">Diseños</a>
+            <a href="Pedidos.html">Pedidos</a>
+            <a href="Cotizacion.html">Cotización</a>
+        </nav>
+    
+        <a>Bienvenido<div class="usuario"  id="nombreUsuario"></div></a>
+        <nav class="menu">
+            <button onclick="openVideoSelector()">Ver video</button>
+            <button onclick="cerrarSesion()">Cerrar sesión</button>
+        </nav>
+    </header>
+
+        <script>
+        const usuarioActivo = localStorage.getItem('usuarioActivo');
+        const horaInicio = localStorage.getItem('horaInicio');
+        const tiempoLimite = 5 * 60 * 1000; // 5 minutos
+
+        if (usuarioActivo && horaInicio) {
+            const tiempoTranscurrido = Date.now() - parseInt(horaInicio);
+            if (tiempoTranscurrido > tiempoLimite) {
+                alert('Sesión expirada. Vuelve a iniciar sesión.');
+                localStorage.removeItem('usuarioActivo');
+                localStorage.removeItem('horaInicio');
+                window.location.href = 'index.html';
+            } else {
+                document.getElementById('nombreUsuario').textContent = usuarioActivo;
+            }
+        } else {
+            document.getElementById('nombreUsuario').textContent = 'Invitado';
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('usuarioActivo');
+            localStorage.removeItem('horaInicio');
+            window.location.href = 'index.html';
+        }
+    </script>
+    </header>
+
+    <main>
+        <section class="section fade-slide">
+        <div class="image-container">
+            <img alt="Ejemplo de carpintería" src="imagen1.webp"/>
+        </div>
+        <div class="text-container">
+            <h2>Acerca de Carpintería Galindo</h2>
+            <p>En Carpintería Galindo, nos dedicamos a la creación de muebles y elementos de carpintería a medida, combinando la tradición artesanal con las técnicas más modernas.</p>
+            <p>Nos especializamos en la fabricación de muebles para el hogar, la oficina y espacios comerciales. Cada proyecto es abordado con meticulosidad y atención al detalle.</p>
+            <p>Además de la calidad de nuestros productos, nos preocupamos por ofrecer un excelente servicio al cliente. Nuestro objetivo es construir relaciones duraderas basadas en la confianza y la satisfacción.</p>
+        </div>
+        </section>
+    
+        <section class="section section-reverse fade-slide">
+        <div class="image-container">
+            <img alt="Ejemplo de proyecto" src="imagen_proyecto.jpg"/>
+        </div>
+        <div class="text-container">
+            <h2>Nuestros Proyectos</h2>
+            <p>Descubre la calidad y el detalle que ponemos en cada uno de nuestros proyectos. Desde el diseño inicial hasta la instalación final, cada paso se realiza con precisión y cuidado.</p>
+            <p>Explora algunos de nuestros proyectos más recientes y déjate inspirar.</p>
+        </div>
+        </section>
+    
+        <section class="carousel-container">
+        <div class="carousel-images">
+            <img alt="Proyecto 1" onclick="ampliarImagen(this)" src="proyecto1.jpg"/>
+            <img alt="Proyecto 2" onclick="ampliarImagen(this)" src="proyecto2.jpg"/>
+            <img alt="Proyecto 3" onclick="ampliarImagen(this)" src="proyecto3.jpg"/>
+            <img alt="Proyecto 4" onclick="ampliarImagen(this)" src="proyecto4.jpg"/>
+            <img alt="Proyecto 5" onclick="ampliarImagen(this)" src="proyecto5.jpg"/>
+        </div>
+        </section>
+    
+        <section class="trust-section">
+            <h2>¿Por qué confiar en Carpintería Galindo?</h2>
+            <ul>
+            <li>Experiencia en el sector de la carpintería.</li>
+            <li>Materiales de primera calidad.</li>
+            <li>Diseño y fabricación a medida.</li>
+            <li>Excelente atención al cliente.</li>
+            <li>Garantía en todos nuestros trabajos.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+    <div class="social-icons">
+        <a href="https://wa.me/5216181816801" target="_blank"><img alt="Whatsapp" src="icono_whatsapp.png"/></a>
+        <a href="https://facebook.com" target="_blank"><img alt="Facebook" src="icono_facebook.png"/></a>
+        <a href="https://instagram.com" target="_blank"><img alt="Instagram" src="icono_instagram.png"/></a>
+    </div>
+    <p>Contacto: 6181816801</p>
+    </footer>
+
+    <div class="modal" id="modal">
+        <span class="close" onclick="cerrarModal()">×</span>
+        <img class="modal-content" id="imagenAmpliada"/>
+    </div>
+
+    <script>
+        function ampliarImagen(img) {
+            var modal = document.getElementById("modal");
+            var modalImg = document.getElementById("imagenAmpliada");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        function cerrarModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+
+    <script>
+        const usuario = localStorage.getItem('usuario');
+        if (usuario && usuario.trim() !== '') {
+            document.getElementById('usuario').textContent = Bienvenido, ${usuario};
+        } else {
+            document.getElementById('usuario').textContent = 'Invitado';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('¿Estás seguro de cerrar sesión?')) {
+                localStorage.removeItem('usuario');
+                window.location.href = 'file:///C:/PaginaWeb/Registro.html';
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Verifica si ya se mostró en esta sesión
+            if (!sessionStorage.getItem("videoMostrado")) {
+                document.getElementById("videoOverlay").style.display = "flex";
+                sessionStorage.setItem("videoMostrado", "true");
+            }
+        });
+
+        function cerrarVideo() {
+            document.getElementById("videoOverlay").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>

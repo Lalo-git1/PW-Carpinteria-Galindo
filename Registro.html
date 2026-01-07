@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro e Inicio de Sesión</title>
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f7f2e9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .card {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.15);
+        width: 340px;
+        animation: fadeIn 0.6s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .tabs {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+    .tab {
+        cursor: pointer;
+        font-weight: bold;
+        padding: 10px;
+        border-bottom: 2px solid transparent;
+        transition: color 0.3s, border-bottom 0.3s;
+    }
+    .tab.active {
+        border-bottom: 2px solid #c0b38f;
+        color: #c0b38f;
+    }
+    form {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    form.active {
+        display: block;
+        opacity: 1;
+    }
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        border-color: #c0b38f;
+        outline: none;
+    }
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #c0b38f;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+    input[type="submit"]:hover {
+        background-color: #a89b7a;
+    }
+    .validacion {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+    .validacion span {
+        display: block;
+        color: red;
+        transition: color 0.3s;
+    }
+    .validacion span.ok {
+        color: green;
+    }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="tabs">
+        <div class="tab active" onclick="mostrarFormulario('registro')">Registro</div>
+        <div class="tab" onclick="mostrarFormulario('login')">Iniciar Sesión</div>
+    </div>
+
+    <!-- Formulario Registro -->
+    <form id="registro" class="active" onsubmit="guardarUsuario(); return false;">
+        <input type="text" id="username" placeholder="Usuario" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <div class="validacion" id="mensajeValidacion">
+            <span id="longitud">❌ Mínimo 8 caracteres</span>
+            <span id="mayuscula">❌ Al menos una mayúscula</span>
+            <span id="especial">❌ Al menos un carácter especial (!@#$%^&*()-_+=)</span>
+        </div>
+        <input type="password" id="confirm" placeholder="Confirmar contraseña" required>
+        <input type="submit" value="Registrarse">
+    </form>
+
+    <!-- Formulario Login -->
+    <form id="login" onsubmit="iniciarSesion(); return false;">
+        <input type="text" id="loginUser" placeholder="Usuario" required>
+        <input type="password" id="loginPass" placeholder="Contraseña" required>
+        <input type="submit" value="Iniciar Sesión">
+    </form>
+</div>
+
+<script>
+    // Cambiar entre pestañas con animación
+    function mostrarFormulario(id) {
+        document.querySelectorAll('form').forEach(f => f.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`.tab[onclick="mostrarFormulario('${id}')"]`).classList.add('active');
+    }
+
+    // Validación en tiempo real para registro
+    const passwordInput = document.getElementById('password');
+    const longitudMsg = document.getElementById('longitud');
+    const mayusculaMsg = document.getElementById('mayuscula');
+    const especialMsg = document.getElementById('especial');
+
+    passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        const tieneMayuscula = /[A-Z]/.test(password);
+        const tieneEspecial = /[!@#$%^&*()_\-+=]/.test(password);
+
+        longitudMsg.textContent = password.length >= 8 ? "✔ Mínimo 8 caracteres" : "❌ Mínimo 8 caracteres";
+        longitudMsg.classList.toggle('ok', password.length >= 8);
+
+        mayusculaMsg.textContent = tieneMayuscula ? "✔ Al menos una mayúscula" : "❌ Al menos una mayúscula";
+        mayusculaMsg.classList.toggle('ok', tieneMayuscula);
+
+        especialMsg.textContent = tieneEspecial ? "✔ Al menos un carácter especial (!@#$%^&*()-_+=)" : "❌ Al menos un carácter especial (!@#$%^&*()-_+=)";
+        especialMsg.classList.toggle('ok', tieneEspecial);
+    });
+
+    function guardarUsuario() {
+        const usuario = document.getElementById('username').value.trim();
+        const password = passwordInput.value;
+        const confirm = document.getElementById('confirm').value;
+
+        if (!usuario || password.length < 8 || !/[A-Z]/.test(password) || !/[!@#$%^&*()_\-+=]/.test(password) || password !== confirm) {
+            mostrarError('Verifica los datos ingresados');
+            return;
+        }
+
+        let registros = JSON.parse(localStorage.getItem('registros')) || [];
+        registros.unshift({ usuario, password });
+        if (registros.length > 3) registros.pop();
+        localStorage.setItem('registros', JSON.stringify(registros));
+
+        // Guardamos usuario activo y hora de inicio
+        localStorage.setItem('usuarioActivo', usuario);
+        localStorage.setItem('horaInicio', Date.now());
+
+        // ✅ Redirigimos directamente
+        window.location.href = 'PaginaPrincipal.html';
+    }
+
+    function iniciarSesion() {
+        const usuarioLogin = document.getElementById('loginUser').value.trim();
+        const passwordLogin = document.getElementById('loginPass').value;
+
+        let registros = JSON.parse(localStorage.getItem('registros')) || [];
+        const encontrado = registros.find(r => r.usuario === usuarioLogin && r.password === passwordLogin);
+
+        if (encontrado) {
+            localStorage.setItem('usuarioActivo', usuarioLogin);
+            localStorage.setItem('horaInicio', Date.now());
+            window.location.href = 'PaginaPrincipal.html';
+        } else {
+            mostrarError('Usuario o contraseña incorrectos');
+        }
+    }
+
+    function mostrarError(mensaje) {
+        let errorDiv = document.getElementById('errorMensaje');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'errorMensaje';
+            errorDiv.style.color = 'red';
+            errorDiv.style.textAlign = 'center';
+            errorDiv.style.marginBottom = '10px';
+            document.querySelector('.card').prepend(errorDiv);
+        }
+        errorDiv.textContent = mensaje;
+    }
+</script>
+</body>
+</html>

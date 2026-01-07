@@ -1,0 +1,256 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cotización | Carpintería Galindo</title>
+  <style>
+    header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #c0b38f;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 18px;
+            animation: slideDown 0.6s ease;
+            slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }}
+        }
+    .navbar {
+            background-color: #c0b38f;
+            padding: 10px;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #d4c5a8;
+        }
+    .menu {
+    display: flex;
+    gap: 15px;
+    }
+    :root { --bg: #f5f1e9; --fg: #2f2f2f; --card: #ffffff; }
+    .nav { max-width: 1200px; margin: 0 auto; display:flex; align-items:center; justify-content:space-between; padding: 12px 20px; }
+    .nav a { text-decoration:none; color: var(--fg); margin: 0 8px; padding: 8px 10px; border-radius:8px; }
+    .nav a:hover { background: #f0f0f0; }
+    .brand { font-weight: 700; letter-spacing: 0.3px; }
+    @media (max-width: 640px) { .nav { padding:10px 12px; } .nav a { margin:0 4px; } }
+
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif; color: var(--fg); background: var(--bg); }
+    main { max-width: 1200px; margin: 24px auto; padding: 0 20px; }
+    .section { background: var(--card); border:1px solid #e9e9e9; border-radius:16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+    .section h2 { margin-top:0; }
+    .helper { color: #7a7a7a; font-size: 12px; }
+    label { display:block; margin: 8px 0 6px; font-weight: 600; }
+    input, select, textarea { width:100%; padding: 10px 12px; border:1px solid #dcdcdc; border-radius:10px; background:#fff; font-size: 14px; }
+    input:focus, select:focus, textarea:focus { outline:2px solid #e6d8c2; border-color: #cbb18c; }
+    .button { background: #b88c5a; color:white; border:none; padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer; }
+    .button:hover { filter: brightness(0.95); }
+    .two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+    .price-wrapper { display:grid; grid-template-columns: 2fr 1fr; gap:16px; }
+    @media (max-width: 900px) { .price-wrapper { grid-template-columns: 1fr; } }
+    .totals { background:#fff7ea; border:1px solid #f0e2c9; border-radius: 12px; }
+    .badge { display:inline-block; background:#fff7ea; border:1px solid #f0e2c9; color:#8b5a2b; padding:4px 8px; border-radius:999px; font-size:12px; }
+    .error { color: #b00020; font-size: 12px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+      <div><strong>Carpintería Galindo</strong></div>
+      <nav class="navbar">
+            <a href="file:///C:/PaginaWeb/PaginaPrincipal.html">Inicio</a>
+            <a href="file:///C:/Users/galin/Downloads/Colores.html">Colores</a>
+            <a href="file:///C:/Users/galin/Downloads/Disenos.html">Diseños</a>
+            <a href="file:///C:/Users/galin/Downloads/Pedidos.html">Pedidos</a>
+        </nav>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2>Generar cotización</h2>
+      <p class="helper">Completa los campos para estimar el costo. Si vienes desde Diseños o Colores, el <strong>código</strong> y/o el <strong>acabado</strong> se prellenan automáticamente.</p>
+
+      /cotizacion
+        <div class="price-wrapper">
+          <div>
+            <label for="codigo">Código de diseño</label>
+            <input id="codigo" name="codigo" placeholder="DSG-001..." />
+            <div class="helper">Color recibido: <span class="badge" id="colorBadge">—</span></div>
+
+            <div class="two-col">
+              <div>
+                <label for="material">Material</label>
+                <select id="material" name="material">
+                  <option value="mdf" data-precio="950">MDF premium</option>
+                  <option value="madera" data-precio="1450">Madera sólida</option>
+                  <option value="melamina" data-precio="800">Melamina</option>
+                </select>
+              </div>
+              <div>
+                <label for="acabado">Acabado</label>
+                <select id="acabado" name="acabado">
+                  <option value="mate" data-precio="180">Mate</option>
+                  <option value="semi" data-precio="240">Semibrillante</option>
+                  <option value="alto" data-precio="320">Alto brillo</option>
+                </select>
+              </div>
+            </div>
+
+            <label>Medidas (cm)</label>
+            <div class="two-col">
+              <div><input id="alto" name="alto" type="number" min="1" placeholder="Alto" required /></div>
+              <div><input id="ancho" name="ancho" type="number" min="1" placeholder="Ancho" required /></div>
+            </div>
+
+            <div class="two-col">
+              <div>
+                <label for="complex">Complejidad</label>
+                <select id="complex" name="complex">
+                  <option value="1">Estándar</option>
+                  <option value="1.2">Detallado</option>
+                  <option value="1.4">Premium</option>
+                </select>
+              </div>
+              <div>
+                <label for="accesorios">Accesorios (MXN)</label>
+                <input id="accesorios" name="accesorios" type="number" min="0" value="0" />
+              </div>
+            </div>
+
+            <div class="error" id="errMedidas"></div>
+          </div>
+
+          <div class="section totals">
+            <h3>Resumen</h3>
+            <p class="helper">Valores aproximados en MXN.</p>
+            <div id="resumen">
+              <p>Área aproximada: <strong id="area">0</strong> m²</p>
+              <p>Material: <strong id="precioMaterial">$0</strong></p>
+              <p>Acabado: <strong id="precioAcabado">$0</strong></p>
+              <p>Accesorios: <strong id="precioAccesorios">$0</strong></p>
+              <hr/>
+              <p>Sub-total: <strong id="subtotal">$0</strong></p>
+              <p>Mano de obra (20%): <strong id="manoObra">$0</strong></p>
+              <p>Total estimado: <strong id="total">$0</strong></p>
+            </div>
+            <button class="button" type="submit">Guardar / Solicitar</button>
+            <p class="helper">*Se enviarán los valores calculados a tu servidor en los campos ocultos.</p>
+          </div>
+        </div>
+
+        <!-- Ocultos para enviar al servidor -->
+        <input type="hidden" name="area_m2" id="area_m2" />
+        <input type="hidden" name="subtotal_mxn" id="subtotal_mxn" />
+        <input type="hidden" name="mano_obra_mxn" id="mano_obra_mxn" />
+        <input type="hidden" name="total_mxn" id="total_mxn" />
+      </form>
+    </section>
+  </main>
+
+  <div class="helper" style="text-align:center; padding: 8px 0 24px;">
+    © 2025 Carpintería Galindo
+  </div>
+
+  <script>
+    // Utilidades
+    function getPrecioSelect(sel){ const opt = sel.options[sel.selectedIndex]; return parseFloat(opt.getAttribute('data-precio')||'0'); }
+    function mx(n){ return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(n||0); }
+    function areaCm2ToM2(cm){ return (cm||0)/10000; }
+
+    // Parámetros (?codigo=DSG-... & ?color=CLR-...)
+    const params = new URLSearchParams(location.search);
+    const codigoParam = params.get('codigo');
+    const colorParam  = params.get('color');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const inpCodigo = document.getElementById('codigo');
+      const selAcabado = document.getElementById('acabado');
+      const badge = document.getElementById('colorBadge');
+
+      if (codigoParam) { inpCodigo.value = codigoParam.toUpperCase(); }
+      if (colorParam) {
+        const val = colorParam.toUpperCase();
+        badge.textContent = val;
+        // Mapeo simple color -> acabado sugerido (ajústalo si lo deseas)
+        const map = { 'CLR-ROBLE':'mate', 'CLR-GRIS':'mate', 'CLR-NOGAL':'semi', 'CLR-BEIGE':'alto' };
+        const sugerencia = map[val];
+        if (sugerencia) {
+          for (const opt of selAcabado.options) {
+            if (opt.value === sugerencia) { selAcabado.value = opt.value; break; }
+          }
+        }
+      }
+      calc();
+      resaltarActivo();
+    });
+
+    function resaltarActivo(){
+      const path = (location.pathname.split('/').pop()||'').toLowerCase();
+      document.querySelectorAll('header .nav a[href]').forEach(a=>{
+        const href = (a.getAttribute('href')||'').toLowerCase();
+        if (href===path){ a.setAttribute('aria-current','page'); a.style.fontWeight='700'; a.style.background='#f0f0f0'; }
+      });
+    }
+
+    function calc(){
+      const alto = parseFloat(document.getElementById('alto').value||0);
+      const ancho = parseFloat(document.getElementById('ancho').value||0);
+      const material = document.getElementById('material');
+      const acabado = document.getElementById('acabado');
+      const complex = parseFloat(document.getElementById('complex').value||1);
+      const accesorios = parseFloat(document.getElementById('accesorios').value||0);
+
+      const areaM2 = areaCm2ToM2(alto*ancho);
+      const pMaterial = getPrecioSelect(material) * areaM2;
+      const pAcabado = getPrecioSelect(acabado) * areaM2;
+      const subtotal = (pMaterial + pAcabado + accesorios) * complex;
+      const manoObra = subtotal * 0.20;
+      const total = subtotal + manoObra;
+
+      document.getElementById('area').textContent = areaM2.toFixed(2);
+      document.getElementById('precioMaterial').textContent = mx(pMaterial);
+      document.getElementById('precioAcabado').textContent = mx(pAcabado);
+      document.getElementById('precioAccesorios').textContent = mx(accesorios);
+      document.getElementById('subtotal').textContent = mx(subtotal);
+      document.getElementById('manoObra').textContent = mx(manoObra);
+      document.getElementById('total').textContent = mx(total);
+
+      // Ocultos para enviar
+      document.getElementById('area_m2').value = areaM2.toFixed(4);
+      document.getElementById('subtotal_mxn').value = subtotal.toFixed(2);
+      document.getElementById('mano_obra_mxn').value = manoObra.toFixed(2);
+      document.getElementById('total_mxn').value = total.toFixed(2);
+    }
+
+    function beforeSubmit(evt){
+      const alto = parseFloat(document.getElementById('alto').value||0);
+      const ancho = parseFloat(document.getElementById('ancho').value||0);
+      document.getElementById('errMedidas').textContent = '';
+      if (!alto || !ancho || alto<=0 || ancho<=0){
+        document.getElementById('errMedidas').textContent = 'Indica alto y ancho en cm (valores mayores a 0).';
+        evt.preventDefault();
+        return false;
+      }
+      calc(); // sincroniza ocultos
+      return true;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pedidos | Carpintería Galindo</title>
+  <style>
+/* Base layout */
+* { box-sizing: border-box; }
+header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #c0b38f;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 18px;
+            animation: slideDown 0.6s ease;
+            slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }}
+        }
+.navbar {
+            background-color: #c0b38f;
+            padding: 10px;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+.navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+.navbar a:hover {
+            color: #d4c5a8;
+        }
+.menu {
+            display: flex;
+            gap: 15px;
+        }
+html, body { margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; color: var(--fg); background: var(--bg); }
+main { max-width: 1200px; margin: 24px auto; padding: 0 20px; }
+.section { background: var(--card); border:1px solid #e9e9e9; border-radius:16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+.section h2 { margin-top:0; }
+.helper { color: #7a7a7a; font-size: 12px; }
+.two-col { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 800px) { .two-col { grid-template-columns: 1fr; } }
+label { display:block; margin: 8px 0 6px; font-weight: 600; }
+input, select, textarea { width:100%; padding: 10px 12px; border:1px solid #dcdcdc; border-radius:10px; background:#fff; font-size: 14px; }
+input:focus, select:focus, textarea:focus { outline:2px solid #e6d8c2; border-color: #cbb18c; }
+.button { background: #b88c5a; color:white; border:none; padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer; }
+.button:hover { filter: brightness(0.95); }
+.error { color: #b00020; font-size: 12px; margin-top: 4px; }
+.form-row { margin-bottom: 8px; }
+.badge { display:inline-block; background:#fff7ea; border:1px solid #f0e2c9; color:#8b5a2b; padding:4px 8px; border-radius:999px; font-size:12px; }
+.nav { max-width: 1200px; margin: 0 auto; display:flex; align-items:center; justify-content:space-between; padding: 12px 20px; }
+.nav a { text-decoration:none; color: var(--fg); margin: 0 8px; padding: 8px 10px; border-radius:8px; }
+.brand { font-weight: 700; letter-spacing: 0.3px; }
+@media (max-width: 640px) { .nav { padding:10px 12px; } .nav a { margin:0 4px; } }
+:root { --bg: #f5f1e9; --fg: #2f2f2f; --card: #ffffff; }
+</style>
+</head>
+<body>
+
+<header>
+    <div><strong>Carpintería Galindo</strong></div>
+    <nav class="navbar">
+            <a href="file:///C:/PaginaWeb/PaginaPrincipal.html">Inicio</a>
+            <a href="file:///C:/PaginaWeb/Colores.html">Colores</a>
+            <a href="file:///C:/Users/galin/Downloads/Disenos.html">Diseños</a>
+            <a href="file:///C:/Users/galin/Downloads/Cotizacion.html">Cotización</a>
+        </nav>
+</header>
+
+<main>
+  <section class="section">
+    <h2>Nuevo pedido</h2>
+    <p class="helper">Completa el formulario para solicitar un pedido. Si vienes desde Diseños o Colores, el <strong>código</strong> y/o el <strong>color</strong> se rellenan automáticamente.</p>
+    <form id="formPedido" action="/pedido" method="post" novalidate>
+      <div class="two-col">
+        <div class="form-row">
+          <label for="nombre">Nombre completo</label>
+          <input id="nombre" name="nombre" required placeholder="Tu nombre" />
+          <div class="error" id="errNombre"></div>
+        </div>
+        <div class="form-row">
+          <label for="telefono">Teléfono / WhatsApp</label>
+          <input id="telefono" name="telefono" required placeholder="6181234567" inputmode="tel" />
+          <div class="error" id="errTelefono"></div>
+        </div>
+        <div class="form-row">
+          <label for="email">Correo electrónico</label>
+          <input id="email" type="email" name="email" placeholder="tucorreo@ejemplo.com" />
+          <div class="error" id="errEmail"></div>
+        </div>
+        <div class="form-row">
+          <label for="codigo">Código de diseño</label>
+          <input id="codigo" name="codigo" placeholder="DSG-001, DSG-002..." />
+          <div class="helper">Si entraste desde Diseños, se completa automáticamente.</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="tipo">Tipo de mueble</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Selecciona...</option>
+          <option>Sala / TV</option>
+          <option>Recámara</option>
+          <option>Cocina</option>
+          <option>Oficina</option>
+          <option>Otro</option>
+        </select>
+        <div class="error" id="errTipo"></div>
+      </div>
+
+      <div class="form-row">
+        <label for="color">Acabado / Color</label>
+        <select id="color" name="color">
+          <option value="">Selecciona...</option>
+          <option value="CLR-ROBLE">Roble Natural (CLR-ROBLE)</option>
+          <option value="CLR-NOGAL">Nogal Oscuro (CLR-NOGAL)</option>
+          <option value="CLR-GRIS">Gris Mate (CLR-GRIS)</option>
+          <option value="CLR-BEIGE">Beige Suave (CLR-BEIGE)</option>
+        </select>
+        <div class="helper">Código seleccionado: <span class="badge" id="colorBadge">—</span></div>
+      </div>
+
+      <div class="form-row">
+        <label for="medidas">Medidas aproximadas</label>
+        <textarea id="medidas" name="medidas" rows="3" placeholder="Alto x Ancho x Fondo, en cm"></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="descripcion">Descripción del proyecto</label>
+        <textarea id="descripcion" name="descripcion" rows="4" placeholder="Cuéntanos detalles, accesorios, iluminación, etc."></textarea>
+      </div>
+
+      <div style="margin-top:12px"> 
+        <button class="button" type="submit">Enviar pedido</button>
+      </div>
+      <p class="helper" style="margin-top:8px">*En tu app Flask, implementa POST /pedido para guardar en MySQL y enviar confirmación.</p>
+    </form>
+  </section>
+</main>
+<div class="helper" style="text-align:center; padding: 8px 0 24px;">© 2025 Carpintería Galindo</div>
+
+<script>
+  // --- Prefill desde query (?codigo=DSG-... & ?color=CLR-...) ---
+  const params = new URLSearchParams(location.search);
+  const codigoParam = params.get('codigo');
+  const colorParam  = params.get('color');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const inpCodigo = document.getElementById('codigo');
+    const selColor  = document.getElementById('color');
+    const badge     = document.getElementById('colorBadge');
+
+    if (codigoParam) { inpCodigo.value = codigoParam.toUpperCase(); }
+    if (colorParam) {
+      const val = colorParam.toUpperCase();
+      for (const opt of selColor.options) {
+        if (opt.value.toUpperCase() === val) { selColor.value = opt.value; break; }
+      }
+    }
+    actualizarBadge();
+
+    selColor.addEventListener('change', actualizarBadge);
+
+    // Validación al enviar
+    document.getElementById('formPedido').addEventListener('submit', validarYEnviar);
+  });
+
+  function actualizarBadge(){
+    const val = document.getElementById('color').value || '';
+    document.getElementById('colorBadge').textContent = val ? val : '—';
+  }
+
+  // --- Validaciones simples (cliente) ---
+  function validarYEnviar(evt){
+    const nombre   = document.getElementById('nombre');
+    const telefono = document.getElementById('telefono');
+    const email    = document.getElementById('email');
+    const tipo     = document.getElementById('tipo');
+
+    let ok = true;
+
+    // Limpia errores
+    ['errNombre','errTelefono','errEmail','errTipo'].forEach(id => document.getElementById(id).textContent = '');
+
+    // Nombre requerido
+    if (!nombre.value.trim()) { document.getElementById('errNombre').textContent = 'Por favor, escribe tu nombre.'; ok = false; }
+
+    // Teléfono MX: 10 dígitos (permitimos espacios y guiones pero validamos dígitos)
+    const digits = (telefono.value||'').replace(/[^0-9]/g,'');
+    if (digits.length !== 10) { document.getElementById('errTelefono').textContent = 'Teléfono inválido. Debe tener 10 dígitos.'; ok = false; }
+
+    // Email opcional, pero si viene, valida formato básico
+    if (email.value && !/^\S+@\S+\.\S+$/.test(email.value)) { document.getElementById('errEmail').textContent = 'Correo inválido.'; ok = false; }
+
+    // Tipo requerido
+    if (!tipo.value) { document.getElementById('errTipo').textContent = 'Selecciona el tipo de mueble.'; ok = false; }
+
+    if (!ok) { evt.preventDefault(); return false; }
+
+    // Si todo está ok, dejamos pasar el submit al servidor (Flask)
+    return true;
+  }
+</script>
+</body>
+</html>

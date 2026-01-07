@@ -1,0 +1,441 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diseños | Carpintería Galindo</title>
+  <style>
+    :root {
+      /* Paleta base */
+      --bg: #f5f1e9;
+      --fg: #2f2f2f;
+      --card: #ffffff;
+      --muted: #7a7a7a;
+      --accent: #b88c5a;
+
+      /* Componentes */
+      --border: #e9e9e9;
+      --shadow: 0 4px 10px rgba(0,0,0,0.04);
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+
+      /* Tipografía / radios */
+      --radius: 16px;
+      --radius-sm: 12px;
+    }
+
+    /* Base */
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+                   "Helvetica Neue", Arial, sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #c0b38f;
+      color: #fff;
+      padding: 15px 20px;
+      font-size: 18px;
+      animation: slideDown 0.6s ease;
+      slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      o { transform: translateY(0); opacity: 1; }}
+        }
+    .navbar {
+            background-color: #c0b38f;
+            padding: 10px;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #d4c5a8;
+        }
+    
+    main { max-width: 1200px; margin: 24px auto; padding: 0 20px; }
+    .section {
+      background: var(--card); border:1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .section h2 { margin: 0 0 8px; }
+    .helper { color: var(--muted); font-size: 12px; }
+
+    /* Header (igual a la principal) */
+    .nav {
+      max-width: 1200px; margin: 0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 20px;
+    }
+    .nav a { text-decoration:none; color: var(--fg); margin: 0 8px; padding: 8px 10px; border-radius:8px; }
+    .nav a:hover { background: #f0f0f0; }
+    .brand { font-weight: 700; letter-spacing: 0.3px; }
+
+    /* Herramientas de catálogo */
+    .toolbar { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0 16px; }
+    .toolbar .row { display:flex; gap: 8px; align-items:center; flex-wrap: wrap; }
+    .input, .select {
+      width: 100%; padding: 10px 12px; border:1px solid #dcdcdc; border-radius:10px; background:#fff; font-size:14px;
+    }
+    .input:focus, .select:focus { outline:2px solid #e6d8c2; border-color:#cbb18c; }
+    .button { background: var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:600; cursor:pointer; }
+    .button:hover { filter: brightness(0.95); }
+    .ghost { background: var(--bg); color: var(--fg); border:1px solid #e0d7c7; }
+    .ghost:hover { background:#efe9dc; }
+
+    /* Grid tarjetas */
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border:1px solid #eee; border-radius: var(--radius-sm);
+      overflow:hidden; box-shadow: var(--shadow-sm); display:flex; flex-direction:column;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+    .card .img {
+      width: 100%; height: 160px; background: linear-gradient(135deg, #e6dfd2 0%, #dcd3c4 100%);
+      display:flex; align-items:center; justify-content:center; color:#665; font-size:14px;
+    }
+    .body { padding: 12px; display:flex; flex-direction:column; gap:6px; }
+    .title { font-weight: 600; }
+    .badge { display:inline-block; background: var(--bg); border:1px solid #e0d7c7; color: var(--accent);
+             padding:4px 8px; border-radius:999px; font-size:12px; margin-right:4px; }
+    .code { color: var(--accent); font-weight: 600; }
+    .row { display:flex; gap:8px; flex-wrap:wrap; }
+
+    /* Modal vista rápida */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal {
+      background: var(--card); border-radius: var(--radius);
+      max-width: 640px; width: 100%; padding: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.20);
+      border:1px solid var(--border);
+    }
+    .modal h3 { margin-top: 0; }
+    .modal .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .modal .img { height: 180px; border-radius: 12px; background: linear-gradient(135deg, #e6dfd2 0%, #dcd3c4 100%); }
+    .modal .footer { display:flex; gap:8px; justify-content:flex-end; margin-top: 12px; }
+
+    /* Responsivo */
+    @media (max-width: 900px) {
+      .toolbar { grid-template-columns: 1fr; }
+      .modal .grid2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav { padding:10px 12px; }
+      .nav a { margin:0 4px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+        <div><strong>Carpintería Galindo</strong></div>
+        <nav class="navbar">
+            <a href="PaginaPrincipal.html">Inicio</a>
+            <a href="Colores.html">Colores</a>
+            <a href="Pedidos.html">Pedidos</a>
+            <a href="Cotizacion.html">Cotización</a>
+        </nav>
+    </header>
+
+  <main>
+    <section class="section">
+      <h2>Catálogo de Diseños</h2>
+      <p class="helper">
+        Filtra por nombre, código, zona y complejidad. Abre la vista rápida para ver detalles y enlazar a Pedido/Cotización.
+      </p>
+
+      <!-- Herramientas -->
+      <div class="toolbar" role="region" aria-label="Herramientas de catálogo">
+        <div class="row">
+          <input id="q" class="input" type="search" placeholder="Buscar por nombre o código (ej. DSG-003)" aria-label="Buscar diseño" oninput="filtrar()">
+          <button class="button ghost" onclick="limpiar()">Limpiar</button>
+        </div>
+        <div class="row">
+          <select id="zona" class="select" aria-label="Filtrar por zona" onchange="filtrar()">
+            <option value="">Todas las zonas</option>
+            <option>Sala</option>
+            <option>Recámara</option>
+            <option>Cocina</option>
+            <option>Oficina</option>
+            <option>Sala / Oficina</option>
+          </select>
+          <select id="complejidad" class="select" aria-label="Filtrar por complejidad" onchange="filtrar()">
+            <option value="">Todas las complejidades</option>
+            <option value="estandar">Estándar</option>
+            <option value="detallado">Detallado</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
+        <div class="row">
+          <select id="orden" class="select" aria-label="Ordenar" onchange="filtrar()">
+            <option value="">Ordenar por…</option>
+            <option value="titulo">Nombre (A–Z)</option>
+            <option value="codigo">Código (DSG-…)</option>
+          </select>
+          <button class="button ghost" onclick="verTodos()">Ver todos</button>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div id="grid" class="grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div class="helper" style="text-align:center; padding: 8px 0 24px;">
+    © 2025 Carpintería Galindo
+  </div>
+
+  <!-- Modal Vista Rápida -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal" role="document">
+      <h3 id="modalTitle">Vista rápida</h3>
+      <div class="grid2">
+        <div class="img" id="modalImg" aria-label="Imagen del diseño"></div>
+        <div>
+          <p id="modalDesc" style="margin:0 0 8px;"></p>
+          <p class="helper" id="modalMeta"></p>
+        </div>
+      </div>
+      <div class="footer">
+        #Usar en Pedido</a>
+        <a id="modalCot" class="button" href="#" roleodalCerrar" class="button ghost">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ====== Datos ====== */
+    const DISENOS = [
+      { titulo:"Mueble TV Minimalista", zona:"Sala",           codigo:"DSG-001", complejidad:"estandar",
+        descripcion:"Mueble para TV con líneas limpias, almacenamiento inferior y acabado mate.", img:"#e6dfd2" },
+      { titulo:"Clóset Contemporáneo",  zona:"Recámara",       codigo:"DSG-002", complejidad:"detallado",
+        descripcion:"Clóset modular con puertas corredizas, iluminación interior y herrajes premium.", img:"#dcd3c4" },
+      { titulo:"Cocina Integral",       zona:"Cocina",         codigo:"DSG-003", complejidad:"premium",
+        descripcion:"Cocina integral con cubiertas resistentes, módulos superiores e inferiores.", img:"#e6dfd2" },
+      { titulo:"Escritorio Ergonómico", zona:"Oficina",        codigo:"DSG-004", complejidad:"estandar",
+        descripcion:"Escritorio con altura óptima, canal de cables y opción de cajonera.", img:"#dcd3c4" },
+      { titulo:"Librero Modular",       zona:"Sala / Oficina", codigo:"DSG-005", complejidad:"detallado",
+        descripcion:"Librero configurable por módulos, con combinación abierta/cerrada.", img:"#e6dfd2" },
+      { titulo:"Alacena Vertical",      zona:"Cocina",         codigo:"DSG-006", complejidad:"estandar",
+        descripcion:"Alacena vertical para maximizar almacenamiento con accesos ergonómicos.", img:"#dcd3c4" }
+    ];
+
+    /* ====== Estado accesibilidad del modal ====== */
+    let lastFocus = null;           // nodo que tenía el foco antes de abrir el modal
+    let focusables = [];            // elementos focuseables dentro del modal
+    let focusIndex = 0;             // índice actual para el trap
+    const backdrop = document.getElementById("modalBackdrop");
+    const btnCerrar = document.getElementById("modalCerrar");
+
+    /* ====== Render inicial ====== */
+    document.addEventListener("DOMContentLoaded", () => {
+      render(DISENOS);
+      resaltarActivo();
+
+      // Cerrar por click en fondo (fuera del modal)
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) cerrarModal();
+      });
+
+      // Cerrar por botón
+      btnCerrar.addEventListener("click", cerrarModal);
+
+      // Trap de foco en el modal
+      backdrop.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") { e.preventDefault(); cerrarModal(); return; }
+        if (e.key === "Tab") {
+          e.preventDefault();
+          if (!focusables.length) return;
+          focusIndex = (focusIndex + (e.shiftKey ? -1 : 1) + focusables.length) % focusables.length;
+          focusables[focusIndex].focus();
+        }
+      });
+    });
+
+    function resaltarActivo() {
+      const path = (location.pathname.split("/").pop() || "").toLowerCase();
+      document.querySelectorAll("header .nav a[href]").forEach(a => {
+        const href = (a.getAttribute("href") || "").toLowerCase();
+        if (href === path) {
+          a.setAttribute("aria-current", "page");
+          a.style.fontWeight = "700";
+          a.style.background = "#f0f0f0";
+        }
+      });
+    }
+
+    /* ====== Utilidades ====== */
+    function copiar(texto) {
+      navigator.clipboard.writeText(texto)
+        .then(() => alert("Código copiado: " + texto))
+        .catch(() => alert("No se pudo copiar."));
+    }
+    function pretty(level) {
+      if (level === "estandar") return "Estándar";
+      if (level === "detallado") return "Detallado";
+      if (level === "premium") return "Premium";
+      return level;
+    }
+
+    /* ====== Modal: abrir/cerrar correctamente ====== */
+    function abrirModal(item, triggerBtn) {
+      // Guarda el foco para devolverlo al cerrar
+      lastFocus = triggerBtn || document.activeElement;
+
+      // Rellena contenido
+      document.getElementById("modalImg").style.background = `linear-gradient(135deg, ${item.img} 0%, #cfc7b8 100%)`;
+      document.getElementById("modalDesc").textContent = item.descripcion;
+      document.getElementById("modalMeta").textContent = `Zona: ${item.zona} • Complejidad: ${pretty(item.complejidad)} • Código: ${item.codigo}`;
+      document.getElementById("modalPedido").href = `Pedidos.html?codigo=${encodeURIComponent(item.codigo)}`;
+      document.getElementById("modalCot").href    = `Cotizacion.html?codigo=${encodeURIComponent(item.codigo)}`;
+
+      // Muestra modal y habilita trap
+      backdrop.style.display = "flex";
+      backdrop.setAttribute("aria-hidden", "false");
+
+      // Foco al primer control y registra elementos focuseables
+      focusables = Array.from(backdrop.querySelectorAll("a.button, button.button, button.ghost"));
+      focusIndex = 0;
+      if (focusables.length) focusables[0].focus();
+    }
+
+    function cerrarModal() {
+      backdrop.style.display = "none";
+      backdrop.setAttribute("aria-hidden", "true");
+      // Restablece eventos (ESC se maneja dentro de keydown del backdrop)
+      // Devuelve el foco al botón que abrió el modal (o al elemento previo)
+      if (lastFocus && typeof lastFocus.focus === "function") {
+        lastFocus.focus();
+      }
+    }
+
+    /* ====== Render del catálogo ====== */
+    function render(list) {
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+
+      // Render incremental por performance (chunking)
+      const chunk = 20;
+      let i = 0;
+      (function draw() {
+        const frag = document.createDocumentFragment();
+        for (let c=0; c<chunk && i<list.length; c++, i++) {
+          const d = list[i];
+          frag.appendChild(card(d));
+        }
+        grid.appendChild(frag);
+        if (i < list.length) requestAnimationFrame(draw);
+      })();
+    }
+
+    function card(d) {
+      const article = document.createElement("article");
+      article.className = "card";
+      article.setAttribute("tabindex", "0");
+      article.setAttribute("aria-label", `${d.titulo} (${d.codigo})`);
+
+      const img = document.createElement("div");
+      img.className = "img";
+      img.textContent = "Foto de referencia";
+      img.style.background = `linear-gradient(135deg, ${d.img} 0%, #cfc7b8 100%)`;
+
+      const body = document.createElement("div");
+      body.className = "body";
+
+      const title = document.createElement("h3");
+      title.className = "title"; title.textContent = d.titulo;
+
+      const badges = document.createElement("div");
+      badges.innerHTML = `<span class="badge">${d.zona}</span><span class="badge">${pretty(d.complejidad)}</span>`;
+
+      const code = document.createElement("div");
+      code.className = "code"; code.textContent = "Código: " + d.codigo;
+
+      const acciones = document.createElement("div");
+      acciones.className = "row";
+
+      const btnCopiar = document.createElement("button");
+      btnCopiar.className = "button ghost"; btnCopiar.textContent = "Copiar código";
+      btnCopiar.onclick = () => copiar(d.codigo);
+
+      const btnPedido = document.createElement("a");
+      btnPedido.className = "button"; btnPedido.textContent = "Usar en Pedido";
+      btnPedido.href = "Pedidos.html?codigo=" + encodeURIComponent(d.codigo);
+      btnPedido.setAttribute("role", "button");
+
+      const btnCot = document.createElement("a");
+      btnCot.className = "button"; btnCot.textContent = "Usar en Cotización";
+      btnCot.href = "Cotizacion.html?codigo=" + encodeURIComponent(d.codigo);
+      btnCot.setAttribute("role", "button");
+
+      const btnVista = document.createElement("button");
+      btnVista.className = "button ghost"; btnVista.textContent = "Vista rápida";
+      btnVista.onclick = () => abrirModal(d, btnVista);
+
+      acciones.append(btnCopiar, btnPedido, btnCot, btnVista);
+      body.append(title, badges, code, acciones);
+      article.append(img, body);
+      return article;
+    }
+
+    /* ====== Filtros + orden + búsqueda ====== */
+    function filtrar() {
+      const q   = (document.getElementById("q").value || "").trim().toLowerCase();
+      const z   = (document.getElementById("zona").value || "").trim();
+      const cpx = (document.getElementById("complejidad").value || "").trim();
+      const ord = (document.getElementById("orden").value || "").trim();
+
+      let res = DISENOS.filter(d =>
+        (!q || d.titulo.toLowerCase().includes(q) || d.codigo.toLowerCase().includes(q)) &&
+        (!z || d.zona === z) &&
+        (!cpx || d.complejidad === cpx)
+      );
+
+      if (ord === "titulo") {
+        res = res.slice().sort((a,b) => a.titulo.localeCompare(b.titulo));
+      } else if (ord === "codigo") {
+        res = res.slice().sort((a,b) => a.codigo.localeCompare(b.codigo));
+      }
+
+      const grid = document.getElementById("grid");
+      if (!res.length) {
+        grid.innerHTML = '<p class="helper">Sin resultados con los filtros actuales.</p>';
+        return;
+      }
+      render(res);
+    }
+
+    function verTodos() {
+      document.getElementById("q").value = "";
+      document.getElementById("zona").value = "";
+      document.getElementById("complejidad").value = "";
+      document.getElementById("orden").value = "";
+      render(DISENOS);
+    }
+
+    function limpiar() {
+      document.getElementById("q").value = "";
+      filtrar();
+    }
+  </script>
+</body>
+</html>
